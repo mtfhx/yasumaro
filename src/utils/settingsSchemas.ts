@@ -29,6 +29,7 @@ export const GENERAL_SETTINGS_SCHEMA: SettingsSchema = [
   { key: StorageKeys.OBSIDIAN_PORT, type: 'number' },
   { key: StorageKeys.OBSIDIAN_HOST, type: 'text' },
   { key: StorageKeys.OBSIDIAN_DAILY_PATH, type: 'text' },
+  { key: StorageKeys.OBSIDIAN_SECTION_ORDER, type: 'select' },
   { key: StorageKeys.GEMINI_API_KEY, type: 'password' },
   { key: StorageKeys.GEMINI_MODEL, type: 'text' },
   { key: StorageKeys.GEMINI_API_VERSION, type: 'text' },

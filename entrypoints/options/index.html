@@ -325,6 +325,15 @@
             </div>
 
             <div class="form-group">
+              <label for="obsidianSectionOrder" data-i18n="obsidianSectionOrderLabel">History Entry Order</label>
+              <select id="obsidianSectionOrder" data-storage-key="obsidian_section_order" aria-describedby="obsidianSectionOrderHelp">
+                <option value="newest_first" data-i18n="obsidianSectionOrderNewest">Newest first (insert at top)</option>
+                <option value="oldest_first" data-i18n="obsidianSectionOrderOldest">Oldest first (append at bottom)</option>
+              </select>
+              <div id="obsidianSectionOrderHelp" class="help-text" data-i18n="obsidianSectionOrderHelp">Where new records are added in the Browser History section. Newest first puts the latest record at the top of the section.</div>
+            </div>
+
+            <div class="form-group">
               <label for="obsidianHost" data-i18n="label_obsidian_host">Obsidian Host</label>
               <input type="text" id="obsidianHost" data-storage-key="obsidian_host" placeholder="127.0.0.1" aria-invalid="false"
                 aria-describedby="obsidianHostNote obsidianHostError">

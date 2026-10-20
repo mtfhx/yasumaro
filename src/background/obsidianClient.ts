@@ -250,6 +250,10 @@ export class ObsidianClient {
             const dailyPathRaw = settings[StorageKeys.OBSIDIAN_DAILY_PATH]
                 ?? (DEFAULT_SETTINGS[StorageKeys.OBSIDIAN_DAILY_PATH] as string);
             const dailyPath = buildDailyNotePath(dailyPathRaw);
+            // 並び順は設定で切り替え可能。未設定・不正値は既定（新しい順）に倒す。
+            const sectionOrder = settings[StorageKeys.OBSIDIAN_SECTION_ORDER] === 'oldest_first'
+                ? 'oldest_first'
+                : 'newest_first';
             const targetUrl = ENDPOINTS.dailyNote(baseUrl, dailyPath);
 
             try {
@@ -258,7 +262,12 @@ export class ObsidianClient {
                     existingContent,
                     NoteSectionEditor.DEFAULT_SECTION_HEADER,
                     content,
-                    options
+                    {
+                        // dedupe is caller-driven (offline replay); the order is
+                        // the user setting and applies to every write path.
+                        ...options,
+                        order: sectionOrder,
+                    }
                 );
 
                 await this._writeContent(targetUrl, headers, newContent, traceId);

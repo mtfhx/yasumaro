@@ -95,6 +95,18 @@
   "dailyNotePathHelp": {
     "message": "YYYY / MM / DD are replaced with the current date (e.g. raw/YYYY-MM → raw/2026-09)"
   },
+  "obsidianSectionOrderLabel": {
+    "message": "History Entry Order"
+  },
+  "obsidianSectionOrderNewest": {
+    "message": "Newest first (insert at top)"
+  },
+  "obsidianSectionOrderOldest": {
+    "message": "Oldest first (append at bottom)"
+  },
+  "obsidianSectionOrderHelp": {
+    "message": "Where new records are added in the Browser History section of the daily note. Newest first shows the latest record at the top."
+  },
   "label_obsidian_host": {
     "message": "Obsidian Host"
   },
@@ -2034,7 +2046,7 @@
     "message": "View Storage Modes (SQLite / Obsidian) Guide (opens in new tab)"
   },
   "advancedSettings": {
-    "message": "Advanced Settings (Protocol / Port / Daily Note Path)"
+    "message": "Advanced Settings (Protocol / Port / Daily Note Path / Entry Order)"
   },
   "aiSection": {
     "message": "AI Provider"

@@ -34,8 +34,16 @@ import { DEFAULT_IMPORT_SIZE_CAP_BYTES } from './importPipeline.js';
 // the encrypted flow needs decrypt between authenticate and validate, which
 // the four-stage pipeline has no stage for (see importPipeline.ts header).
 
-/** Current export format version (plaintext settings) */
-export const EXPORT_VERSION = '1.1.0';
+/**
+ * Current export format version (plaintext settings).
+ *
+ * Bump this whenever DEFAULT_SETTINGS gains a key that current-format
+ * validation will require. Validation is version-gated: a payload older than
+ * this version is validated against the frozen legacy contract, so exports
+ * written by previous releases (which cannot contain the new key) still
+ * import instead of being rejected as incomplete.
+ */
+export const EXPORT_VERSION = '1.2.0';
 
 /**
  * Version written before SSOT-derived key validation (PBI 04). Payloads with

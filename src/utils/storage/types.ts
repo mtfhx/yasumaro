@@ -38,6 +38,7 @@ export const StorageKeys = {
     MIN_SCROLL_DEPTH: 'min_scroll_depth',
     GEMINI_MODEL: 'gemini_model',
     OBSIDIAN_DAILY_PATH: 'obsidian_daily_path',
+    OBSIDIAN_SECTION_ORDER: 'obsidian_section_order', // 閲覧履歴セクションへの記録順 'newest_first' | 'oldest_first'
     HISTORY_SORT_PREFERENCE: 'history_sort_preference', // 履歴パネルのソート設定 { sortBy, sortDir } をJSON文字列で保存
     AI_PROVIDER: 'ai_provider',
     AI_PROVIDER_PRIORITY_LIST: 'ai_provider_priority_list', // 優先度1〜3位のプロバイダ設定（ProviderSlot[]）
@@ -318,6 +319,13 @@ export function isPrivacyMode(value: unknown): value is PrivacyMode {
     return typeof value === 'string' && (PRIVACY_MODES as readonly string[]).includes(value);
 }
 
+/**
+ * デイリーノートの閲覧履歴セクションに記録を差し込む位置。
+ * - newest_first: セクション先頭（新しい記録ほど上）
+ * - oldest_first: セクション末尾（従来の追記動作）
+ */
+export type ObsidianSectionOrder = 'newest_first' | 'oldest_first';
+
 // 各 StorageKey に対応する値型
 export interface StorageKeyValues {
     [StorageKeys.OBSIDIAN_API_KEY]: string | EncryptedData;
@@ -331,6 +339,7 @@ export interface StorageKeyValues {
     [StorageKeys.MIN_SCROLL_DEPTH]: number;
     [StorageKeys.GEMINI_MODEL]: string;
     [StorageKeys.OBSIDIAN_DAILY_PATH]: string;
+    [StorageKeys.OBSIDIAN_SECTION_ORDER]: ObsidianSectionOrder;
     [StorageKeys.HISTORY_SORT_PREFERENCE]: string;
     [StorageKeys.AI_PROVIDER]: string;
     [StorageKeys.AI_PROVIDER_PRIORITY_LIST]: ProviderSlot[];

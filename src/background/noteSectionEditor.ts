@@ -1,4 +1,6 @@
 // src/background/noteSectionEditor.ts
+import type { ObsidianSectionOrder } from '../utils/storage/types.js';
+
 export interface InsertOptions {
   /**
    * PBI 2026-09-25-13: when true, skip insertion when the target section
@@ -7,12 +9,23 @@ export interface InsertOptions {
    * Dashboard append (user-invoked) keeps unconditional insertion.
    */
   dedupe?: boolean;
+  /**
+   * 挿入位置。'newest_first' はセクション先頭（最新が上）、
+   * 'oldest_first' はセクション末尾への追記（従来動作）。
+   * 省略時は 'newest_first'。
+   */
+  order?: ObsidianSectionOrder;
 }
 
 export class NoteSectionEditor {
   static DEFAULT_SECTION_HEADER = '# 🌐 ブラウザ閲覧履歴';
 
-  static insertIntoSection(existingContent: string, sectionHeader: string, newContent: string, options: InsertOptions = {}): string {
+  static insertIntoSection(
+    existingContent: string,
+    sectionHeader: string,
+    newContent: string,
+    options: InsertOptions = {}
+  ): string {
     if (existingContent.includes(sectionHeader)) {
       return this._insertUnderExistingSection(existingContent, sectionHeader, newContent, options);
     } else {
@@ -20,7 +33,12 @@ export class NoteSectionEditor {
     }
   }
 
-  private static _insertUnderExistingSection(content: string, sectionHeader: string, newContent: string, options: InsertOptions = {}): string {
+  private static _insertUnderExistingSection(
+    content: string,
+    sectionHeader: string,
+    newContent: string,
+    options: InsertOptions = {}
+  ): string {
     const lines = content.split('\n');
     const sectionIndex = lines.findIndex(line => line.trim() === sectionHeader);
 
@@ -28,6 +46,17 @@ export class NoteSectionEditor {
       // Same operation replayed: the identical block is already in the
       // section, so inserting again would stack a duplicate.
       return content;
+    }
+
+    const order = options.order ?? 'newest_first';
+    if (order === 'newest_first') {
+      // 見出し直後の空行は区切りとして残し、その下に最新の記録を挿入する。
+      let topIndex = sectionIndex + 1;
+      while (topIndex < lines.length && lines[topIndex]?.trim() === '') {
+        topIndex++;
+      }
+      lines.splice(topIndex, 0, newContent);
+      return lines.join('\n');
     }
 
     // Start at the line after the section header

@@ -124,6 +124,17 @@ describe('intended validateExportData behavior (SSOT-derived)', () => {
     expect(validateExportData(exportData(settings, true, LEGACY_EXPORT_VERSION))).toBe(true);
   });
 
+  test('1.1.0 export lacking a key added later stays importable', () => {
+    const settings = fullNonApiSettings();
+    delete settings['obsidian_section_order'];
+
+    // 旧バージョン(1.1.0)のエクスポートは新キーを持たないが、凍結契約で
+    // 検証されるため引き続きインポートできる。
+    expect(validateExportData(exportData(settings, true, '1.1.0'))).toBe(true);
+    // 現行形式では同じ欠落は不完全なペイロードとして拒否する。
+    expect(validateExportData(exportData(settings, true))).toBe(false);
+  });
+
   test('legacy 1.0.0 payload missing a legacy key is still rejected', () => {
     const settings: Record<string, unknown> = {};
     for (const key of LEGACY_REQUIRED_KEYS) {

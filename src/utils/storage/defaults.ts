@@ -38,6 +38,9 @@ export const DEFAULT_SETTINGS: DeepReadonly<Settings> = {
     [StorageKeys.GEMINI_API_KEY]: '',
     [StorageKeys.GEMINI_MODEL]: 'gemini-3.1-flash-lite',
     [StorageKeys.OBSIDIAN_DAILY_PATH]: '092.Daily',
+    // 新しい記録をセクション先頭に置く（読み返し時に最新が上）。従来の
+    // 末尾追記に戻したい場合は設定で 'oldest_first' を選ぶ。
+    [StorageKeys.OBSIDIAN_SECTION_ORDER]: 'newest_first',
     [StorageKeys.AI_PROVIDER]: 'openai',
     [StorageKeys.AI_PROVIDER_PRIORITY_LIST]: [],
     [StorageKeys.AI_PROVIDER_LAYOUT]: 'a',

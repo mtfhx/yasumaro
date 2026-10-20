@@ -95,6 +95,18 @@
   "dailyNotePathHelp": {
     "message": "YYYY / MM / DD は現在の日付に自動置換されます（例: raw/YYYY-MM → raw/2026-09）"
   },
+  "obsidianSectionOrderLabel": {
+    "message": "閲覧履歴の並び順"
+  },
+  "obsidianSectionOrderNewest": {
+    "message": "新しい順（セクションの先頭に追加）"
+  },
+  "obsidianSectionOrderOldest": {
+    "message": "古い順（セクションの末尾に追加）"
+  },
+  "obsidianSectionOrderHelp": {
+    "message": "デイリーノートの「ブラウザ閲覧履歴」セクションに記録を追加する位置です。新しい順では、最新の記録ほど上に表示されます。"
+  },
   "label_obsidian_host": {
     "message": "Obsidian ホスト"
   },
@@ -1971,7 +1983,7 @@
     "message": "ストレージモード（SQLite / Obsidian）の違いを見る（新しいタブで開きます）"
   },
   "advancedSettings": {
-    "message": "詳細設定（Protocol / Port / Daily Note Path）"
+    "message": "詳細設定（Protocol / Port / Daily Note Path / 閲覧履歴の並び順）"
   },
   "aiSection": {
     "message": "AI プロバイダー"

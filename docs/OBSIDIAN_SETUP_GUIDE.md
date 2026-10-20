@@ -87,6 +87,17 @@ Chrome の Yasumaro 拡張機能アイコンを右クリックして **オプシ
 
 入力が終わったら **「Save」** で保存し、**「Test Obsidian」** ボタンをクリックしてください。「成功！Obsidianに接続しました。設定を保存しました。」と表示されれば設定完了です。Obsidian が起動していない状態でテストすると必ず失敗するため、テスト前に Obsidian が起動していることを確認してください。
 
+#### 閲覧履歴の並び順
+
+同じ「詳細設定」の中にある **閲覧履歴の並び順** で、`# 🌐 ブラウザ閲覧履歴` セクションへ記録を追加する位置を選べます。
+
+| 設定 | 動作 |
+|------|------|
+| **新しい順（既定）** | 最新の記録がセクションの先頭に来ます。読み返すときに上から新しい順で並びます。 |
+| **古い順** | 従来どおり、セクションの末尾に追記します。 |
+
+設定は次回の記録から反映されます。既存ノートにすでに書かれている記録の順序は変更されません。
+
 ---
 
 ### トラブルシューティング
@@ -219,6 +230,17 @@ If your daily notes are organized into monthly or yearly subfolders, you can use
 
 4. Click **Save**, then click **Test Obsidian**.
 5. You should see "Success! Connected to Obsidian. Settings Saved.".
+
+#### History Entry Order
+
+Under **Advanced Settings** you can choose where new records are added in the `# 🌐 ブラウザ閲覧履歴` section:
+
+| Setting | Behaviour |
+|---------|-----------|
+| **Newest first (default)** | The newest record goes to the top of the section. |
+| **Oldest first** | Appends to the end of the section, matching the previous behaviour. |
+
+The setting applies from the next recorded page onward. Existing records already in the note are not reordered.
 
 ---
 

@@ -31,6 +31,83 @@ describe('NoteSectionEditor', () => {
       expect(newIndex).toBeLessThan(otherIndex);
     });
 
+    it('appends after the existing entries under the section (oldest_first)', () => {
+      const existing = '# 🌐 ブラウザ閲覧履歴\n- Old entry\n\n## Other Section';
+      const result = NoteSectionEditor.insertIntoSection(
+        existing,
+        '# 🌐 ブラウザ閲覧履歴',
+        '- New entry',
+        { order: 'oldest_first' }
+      );
+
+      expect(result).toBe(
+        '# 🌐 ブラウザ閲覧履歴\n- Old entry\n\n- New entry\n## Other Section'
+      );
+    });
+
+    it('inserts the new entry at the top of the section (newest_first)', () => {
+      const existing = '# 🌐 ブラウザ閲覧履歴\n- Old entry\n\n## Other Section';
+      const result = NoteSectionEditor.insertIntoSection(
+        existing,
+        '# 🌐 ブラウザ閲覧履歴',
+        '- New entry',
+        { order: 'newest_first' }
+      );
+
+      expect(result).toBe(
+        '# 🌐 ブラウザ閲覧履歴\n- New entry\n- Old entry\n\n## Other Section'
+      );
+    });
+
+    it('keeps a blank line directly under the header above the newest entry (newest_first)', () => {
+      const existing = '# 🌐 ブラウザ閲覧履歴\n\n- Old entry\n';
+      const result = NoteSectionEditor.insertIntoSection(
+        existing,
+        '# 🌐 ブラウザ閲覧履歴',
+        '- New entry',
+        { order: 'newest_first' }
+      );
+
+      expect(result).toBe('# 🌐 ブラウザ閲覧履歴\n\n- New entry\n- Old entry\n');
+    });
+
+    it('inserts right under the header when the section is empty (newest_first)', () => {
+      const existing = '# 🌐 ブラウザ閲覧履歴\n\n## Other Section';
+      const result = NoteSectionEditor.insertIntoSection(
+        existing,
+        '# 🌐 ブラウザ閲覧履歴',
+        '- New entry',
+        { order: 'newest_first' }
+      );
+
+      expect(result).toBe('# 🌐 ブラウザ閲覧履歴\n\n- New entry\n## Other Section');
+    });
+
+    it('handles multi-line markdown entries when inserting at the top (newest_first)', () => {
+      const existing = '# 🌐 ブラウザ閲覧履歴\n- 09:15 [Old](https://old.example)\n    - Old summary';
+      const result = NoteSectionEditor.insertIntoSection(
+        existing,
+        '# 🌐 ブラウザ閲覧履歴',
+        '- 14:30 [New](https://new.example)\n    - New summary',
+        { order: 'newest_first' }
+      );
+
+      expect(result).toBe(
+        '# 🌐 ブラウザ閲覧履歴\n- 14:30 [New](https://new.example)\n    - New summary\n- 09:15 [Old](https://old.example)\n    - Old summary'
+      );
+    });
+
+    it('defaults to newest_first when the order is omitted', () => {
+      const existing = '# 🌐 ブラウザ閲覧履歴\n- Old entry';
+      const result = NoteSectionEditor.insertIntoSection(
+        existing,
+        '# 🌐 ブラウザ閲覧履歴',
+        '- New entry'
+      );
+
+      expect(result).toBe('# 🌐 ブラウザ閲覧履歴\n- New entry\n- Old entry');
+    });
+
     it('should handle empty content with new section', () => {
       const result = NoteSectionEditor.insertIntoSection(
         '',

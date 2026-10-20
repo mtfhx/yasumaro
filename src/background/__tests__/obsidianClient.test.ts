@@ -912,6 +912,65 @@ describe('ObsidianClient: connection check retry policy', () => {
       await expect(obsidianClient.appendToDailyNote('new content')).resolves.not.toThrow();
     });
 
+    it('inserts at the top of the section by default (newest first)', async () => {
+      mockGetSettings.mockResolvedValue({
+        OBSIDIAN_API_KEY: 'test_key',
+        OBSIDIAN_PROTOCOL: 'http',
+        OBSIDIAN_PORT: '27123',
+        OBSIDIAN_DAILY_PATH: ''
+      });
+
+      fetchMock().mockImplementation((_url, options) => {
+        if (options.method === 'GET') {
+          return Promise.resolve({
+            ok: true,
+            text: () => Promise.resolve('## History\nexisting content')
+          });
+        }
+        return Promise.resolve({ ok: true });
+      });
+
+      await obsidianClient.appendToDailyNote('new content');
+
+      expect(NoteSectionEditor.insertIntoSection).toHaveBeenCalledWith(
+        '## History\nexisting content',
+        '## History',
+        'new content',
+        { order: 'newest_first' }
+      );
+    });
+
+    it('honours the configured oldest_first order', async () => {
+      (storage as unknown as { StorageKeys: Record<string, string> }).StorageKeys.OBSIDIAN_SECTION_ORDER =
+        'OBSIDIAN_SECTION_ORDER';
+      mockGetSettings.mockResolvedValue({
+        OBSIDIAN_API_KEY: 'test_key',
+        OBSIDIAN_PROTOCOL: 'http',
+        OBSIDIAN_PORT: '27123',
+        OBSIDIAN_DAILY_PATH: '',
+        OBSIDIAN_SECTION_ORDER: 'oldest_first'
+      });
+
+      fetchMock().mockImplementation((_url, options) => {
+        if (options.method === 'GET') {
+          return Promise.resolve({
+            ok: true,
+            text: () => Promise.resolve('## History\nexisting content')
+          });
+        }
+        return Promise.resolve({ ok: true });
+      });
+
+      await obsidianClient.appendToDailyNote('new content');
+
+      expect(NoteSectionEditor.insertIntoSection).toHaveBeenCalledWith(
+        '## History\nexisting content',
+        '## History',
+        'new content',
+        { order: 'oldest_first' }
+      );
+    });
+
     it('generates the correct URL under /vault/ via ENDPOINTS.dailyNote()', async () => {
       mockGetSettings.mockResolvedValue({
         OBSIDIAN_API_KEY: 'test_key',

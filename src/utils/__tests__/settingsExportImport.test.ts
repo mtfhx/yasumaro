@@ -407,8 +407,8 @@ const { getOrCreateHmacSecret } = vi.mocked(encryptionSession);
 describe('settingsExportImport', () => {
 
     describe('定数', () => {
-        test('keeps EXPORT_VERSION at 1.1.0 and LEGACY_EXPORT_VERSION at 1.0.0', () => {
-            expect(EXPORT_VERSION).toBe('1.1.0');
+        test('keeps EXPORT_VERSION at 1.2.0 and LEGACY_EXPORT_VERSION at 1.0.0', () => {
+            expect(EXPORT_VERSION).toBe('1.2.0');
             expect(LEGACY_EXPORT_VERSION).toBe('1.0.0');
         });
     });

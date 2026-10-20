@@ -27,4 +27,25 @@ describe('GENERAL_SETTINGS_SCHEMA', () => {
       expect(messages.contentStorageEnabledLabel?.message, `${locale} label`).toBeTruthy();
     }
   });
+
+  it('binds obsidian_section_order as a select in the dashboard HTML', () => {
+    const entry = GENERAL_SETTINGS_SCHEMA.find((s) => s.key === StorageKeys.OBSIDIAN_SECTION_ORDER);
+    expect(entry).toBeDefined();
+    expect(entry?.type).toBe('select');
+
+    const html = readFileSync(OPTIONS_HTML_PATH, 'utf8');
+    expect(html).toContain(`data-storage-key="${StorageKeys.OBSIDIAN_SECTION_ORDER}"`);
+  });
+
+  it('has the obsidian section order labels in both locales (en/ja)', () => {
+    for (const locale of ['en', 'ja']) {
+      const messages = JSON.parse(
+        readFileSync(join(ROOT, `public/_locales/${locale}/messages.json`), 'utf8'),
+      );
+      expect(messages.obsidianSectionOrderLabel?.message, `${locale} label`).toBeTruthy();
+      expect(messages.obsidianSectionOrderNewest?.message, `${locale} newest`).toBeTruthy();
+      expect(messages.obsidianSectionOrderOldest?.message, `${locale} oldest`).toBeTruthy();
+      expect(messages.obsidianSectionOrderHelp?.message, `${locale} help`).toBeTruthy();
+    }
+  });
 });
