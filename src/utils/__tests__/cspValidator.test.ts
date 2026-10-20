@@ -29,7 +29,7 @@ describe('CSPValidator - P1 - Module Loading', () => {
     const providers = CSPValidator.getAvailableProviders();
 
     expect(Array.isArray(providers)).toBe(true);
-    expect(providers.length).toBe(30); // 中小AIプロバイダー30（Perplexity/Jina含む）
+    expect(providers.length).toBe(31); // 中小AIプロバイダー31（Perplexity/Jina含む）
     expect(providers).toContain('huggingface');
     expect(providers).toContain('openrouter');
     expect(providers).toContain('deepinfra');

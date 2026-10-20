@@ -192,6 +192,7 @@ export const PROVIDER_ALLOWLIST_ROWS: ReadonlyArray<ProviderAllowlistRow> = [
   { id: 'recraft', isLocal: false, label: 'Recraft', domain: 'recraft.ai', permissionTier: 'optional', conditionalCsp: true },
   { id: 'perplexity', isLocal: false, label: 'Perplexity', domain: 'perplexity.ai', permissionTier: 'optional', conditionalCsp: true },
   { id: 'jina', isLocal: false, label: 'Jina', domain: 'jina.ai', permissionTier: 'optional', conditionalCsp: true },
+  { id: 'ark-volces', isLocal: false, label: 'ark-volces', domain: 'ark.cn-beijing.volces.com', permissionTier: 'optional', conditionalCsp: true },
 ];
 
 /** First-occurrence dedupe preserving row order (openai/openai2 share a domain). */

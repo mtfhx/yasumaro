@@ -37,7 +37,7 @@ export const GOLDEN_DEFAULT_ALLOWED_DOMAINS = [
   'api.ai.sakura.ad.jp',
 ];
 
-/** Verbatim copy of cspValidator.ts PROVIDER_TO_DOMAIN (30 entries, in order). */
+/** Verbatim copy of cspValidator.ts PROVIDER_TO_DOMAIN (31 entries, in order). */
 export const GOLDEN_PROVIDER_TO_DOMAIN: ReadonlyArray<readonly [string, string]> = [
   ['huggingface', 'api-inference.huggingface.co'],
   ['openrouter', 'api.openrouter.ai'],
@@ -69,6 +69,7 @@ export const GOLDEN_PROVIDER_TO_DOMAIN: ReadonlyArray<readonly [string, string]>
   ['gmi', 'api.gmi-serving.com'],
   ['xiaomimimo', 'xiaomimimo.com'],
   ['sakura', 'api.ai.sakura.ad.jp'],
+  ['ark-volces', 'ark.cn-beijing.volces.com'],
 ];
 
 /** Verbatim copy of cspDomains.ts AI_PROVIDER_HOST_PERMISSIONS (14 entries). */
@@ -89,7 +90,7 @@ export const GOLDEN_REQUIRED_PERMISSIONS = [
   'https://api.ai.sakura.ad.jp/*',
 ];
 
-/** Verbatim copy of the hardcoded head of OPTIONAL_AI_PROVIDER_HOST_PERMISSIONS (26 entries). */
+/** Verbatim copy of the hardcoded head of OPTIONAL_AI_PROVIDER_HOST_PERMISSIONS (27 entries). */
 export const GOLDEN_OPTIONAL_PERMISSIONS_HEAD = [
   'https://api-inference.huggingface.co/*',
   'https://api.openrouter.ai/*',
@@ -117,9 +118,10 @@ export const GOLDEN_OPTIONAL_PERMISSIONS_HEAD = [
   'https://recraft.ai/*',
   'https://perplexity.ai/*',
   'https://jina.ai/*',
+  'https://ark.cn-beijing.volces.com/*',
 ];
 
-/** Verbatim copy of the hardcoded head of ALLOWED_AI_PROVIDER_DOMAINS (38 entries). */
+/** Verbatim copy of the hardcoded head of ALLOWED_AI_PROVIDER_DOMAINS (39 entries). */
 export const GOLDEN_WHITELIST_HEAD = [
   'generativelanguage.googleapis.com',
   'api.groq.com',
@@ -159,6 +161,7 @@ export const GOLDEN_WHITELIST_HEAD = [
   'z.ai',
   'wandb.ai',
   'api.ai.sakura.ad.jp',
+  'ark.cn-beijing.volces.com',
 ];
 
 describe('provider domain goldens (PBI 2026-09-21-13)', () => {
@@ -173,7 +176,7 @@ describe('provider domain goldens (PBI 2026-09-21-13)', () => {
     }
   });
 
-  it('PROVIDER_TO_DOMAIN exposes exactly the 30 golden ids with exact values', () => {
+  it('PROVIDER_TO_DOMAIN exposes exactly the 31 golden ids with exact values', () => {
     // Set-identical to the legacy literal; the legacy interleaved key order
     // (volcengine/z-ai/wandb mid-list, sakura last) is a documented delta —
     // derivation emits required rows before optional rows. Order is cosmetic:
@@ -192,7 +195,7 @@ describe('provider domain goldens (PBI 2026-09-21-13)', () => {
     expect([...AI_PROVIDER_HOST_PERMISSIONS]).toEqual(GOLDEN_REQUIRED_PERMISSIONS);
   });
 
-  it('OPTIONAL head is exactly the 26 golden entries in order, tail is the list-source SSOT', () => {
+  it('OPTIONAL head is exactly the 27 golden entries in order, tail is the list-source SSOT', () => {
     expect([...OPTIONAL_AI_PROVIDER_HOST_PERMISSIONS].slice(0, GOLDEN_OPTIONAL_PERMISSIONS_HEAD.length)).toEqual(
       GOLDEN_OPTIONAL_PERMISSIONS_HEAD,
     );
@@ -201,7 +204,7 @@ describe('provider domain goldens (PBI 2026-09-21-13)', () => {
     );
   });
 
-  it('ALLOWED_AI_PROVIDER_DOMAINS head is exactly the 38 golden entries, tail is list hosts + localhost', () => {
+  it('ALLOWED_AI_PROVIDER_DOMAINS head is exactly the 39 golden entries, tail is list hosts + localhost', () => {
     // Set-identical to the legacy literal; the legacy interleaved order is a
     // documented delta — derivation emits tier-blocked row order. Order is
     // cosmetic: the gate uses includes() and set insertion.
