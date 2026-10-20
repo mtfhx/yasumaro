@@ -254,13 +254,20 @@ export class ObsidianClient {
             const sectionOrder = settings[StorageKeys.OBSIDIAN_SECTION_ORDER] === 'oldest_first'
                 ? 'oldest_first'
                 : 'newest_first';
+            // 見出しは設定値（空なら表示言語）を使うが、既存ノートに既知の
+            // 見出しがあればそれを再利用してセクションの重複を防ぐ。
+            const configuredSectionHeader = settings[StorageKeys.OBSIDIAN_SECTION_HEADER] ?? '';
             const targetUrl = ENDPOINTS.dailyNote(baseUrl, dailyPath);
 
             try {
                 const existingContent = await this._fetchExistingContent(targetUrl, headers, traceId);
+                const sectionHeader = NoteSectionEditor.resolveSectionHeader(
+                    existingContent,
+                    configuredSectionHeader
+                );
                 const newContent = NoteSectionEditor.insertIntoSection(
                     existingContent,
-                    NoteSectionEditor.DEFAULT_SECTION_HEADER,
+                    sectionHeader,
                     content,
                     {
                         // dedupe is caller-driven (offline replay); the order is

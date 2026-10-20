@@ -39,6 +39,7 @@ export const StorageKeys = {
     GEMINI_MODEL: 'gemini_model',
     OBSIDIAN_DAILY_PATH: 'obsidian_daily_path',
     OBSIDIAN_SECTION_ORDER: 'obsidian_section_order', // 閲覧履歴セクションへの記録順 'newest_first' | 'oldest_first'
+    OBSIDIAN_SECTION_HEADER: 'obsidian_section_header', // 閲覧履歴セクションの見出し（空なら表示言語から自動）
     HISTORY_SORT_PREFERENCE: 'history_sort_preference', // 履歴パネルのソート設定 { sortBy, sortDir } をJSON文字列で保存
     AI_PROVIDER: 'ai_provider',
     AI_PROVIDER_PRIORITY_LIST: 'ai_provider_priority_list', // 優先度1〜3位のプロバイダ設定（ProviderSlot[]）
@@ -340,6 +341,7 @@ export interface StorageKeyValues {
     [StorageKeys.GEMINI_MODEL]: string;
     [StorageKeys.OBSIDIAN_DAILY_PATH]: string;
     [StorageKeys.OBSIDIAN_SECTION_ORDER]: ObsidianSectionOrder;
+    [StorageKeys.OBSIDIAN_SECTION_HEADER]: string;
     [StorageKeys.HISTORY_SORT_PREFERENCE]: string;
     [StorageKeys.AI_PROVIDER]: string;
     [StorageKeys.AI_PROVIDER_PRIORITY_LIST]: ProviderSlot[];

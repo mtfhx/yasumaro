@@ -48,4 +48,24 @@ describe('GENERAL_SETTINGS_SCHEMA', () => {
       expect(messages.obsidianSectionOrderHelp?.message, `${locale} help`).toBeTruthy();
     }
   });
+
+  it('binds obsidian_section_header as a text input in the dashboard HTML', () => {
+    const entry = GENERAL_SETTINGS_SCHEMA.find((s) => s.key === StorageKeys.OBSIDIAN_SECTION_HEADER);
+    expect(entry).toBeDefined();
+    expect(entry?.type).toBe('text');
+
+    const html = readFileSync(OPTIONS_HTML_PATH, 'utf8');
+    expect(html).toContain(`data-storage-key="${StorageKeys.OBSIDIAN_SECTION_HEADER}"`);
+  });
+
+  it('has the obsidian section header labels in both locales (en/ja)', () => {
+    for (const locale of ['en', 'ja']) {
+      const messages = JSON.parse(
+        readFileSync(join(ROOT, `public/_locales/${locale}/messages.json`), 'utf8'),
+      );
+      expect(messages.obsidianSectionHeaderLabel?.message, `${locale} label`).toBeTruthy();
+      expect(messages.obsidianSectionHeaderPlaceholder?.message, `${locale} placeholder`).toBeTruthy();
+      expect(messages.obsidianSectionHeaderHelp?.message, `${locale} help`).toBeTruthy();
+    }
+  });
 });

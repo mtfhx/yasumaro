@@ -1,4 +1,5 @@
 // src/background/noteSectionEditor.ts
+import { getUserLocale } from '../utils/localeUtils.js';
 import type { ObsidianSectionOrder } from '../utils/storage/types.js';
 
 export interface InsertOptions {
@@ -17,8 +18,81 @@ export interface InsertOptions {
   order?: ObsidianSectionOrder;
 }
 
+/**
+ * 表示言語ごとの既定見出し。
+ *
+ * ノート側の見出しは拡張機能の UI 文言ではなく「既存ノートを検出するための
+ * 安定した文字列」なので、i18n メッセージではなく固定値で持つ。既存ノートが
+ * 別言語の見出しのままでも、それを見つけて同じセクションへ追記できるように
+ * するため、過去に既定として使った見出しも含めて保持する。
+ */
+const JA_SECTION_HEADER = '# 🌐 ブラウザ閲覧履歴';
+const ZH_SECTION_HEADER = '# 🌐 浏览器访问记录';
+const EN_SECTION_HEADER = '# 🌐 Browser History';
+
+/** 既存ノート検出に使う既知の見出し（設定より優先して再利用する）。 */
+const KNOWN_SECTION_HEADERS: readonly string[] = [
+  JA_SECTION_HEADER,
+  ZH_SECTION_HEADER,
+  EN_SECTION_HEADER,
+];
+
 export class NoteSectionEditor {
-  static DEFAULT_SECTION_HEADER = '# 🌐 ブラウザ閲覧履歴';
+  /** 後方互換のための既定見出し（日本語）。 */
+  static DEFAULT_SECTION_HEADER = JA_SECTION_HEADER;
+
+  /**
+   * ロケールに応じた既定見出しを返す。
+   *
+   * @param uiLocale - 表示言語（例: 'ja-JP'）。省略時は chrome.i18n から取得。
+   */
+  static defaultSectionHeader(uiLocale?: string): string {
+    const locale = (uiLocale ?? getUserLocale()).toLowerCase();
+    if (locale.startsWith('zh')) return ZH_SECTION_HEADER;
+    if (locale.startsWith('ja')) return JA_SECTION_HEADER;
+    return EN_SECTION_HEADER;
+  }
+
+  /**
+   * 見出しとして使える1行に正規化する。
+   * 設定値に改行が混ざっていても、先頭行だけを見出しとして扱う。
+   */
+  static normalizeSectionHeader(header: string | null | undefined): string {
+    const trimmed = (header ?? '').trim();
+    if (!trimmed) return '';
+    return trimmed.split(/\r?\n/)[0]?.trim() ?? '';
+  }
+
+  /**
+   * 実際に使う見出しを決める。
+   *
+   * 優先順位:
+   * 1. ノート内に既にある見出し（設定値 → 表示言語の既定 → 既知の見出し）
+   *    — 同じノートに別の履歴セクションを増やさないため
+   * 2. 設定値
+   * 3. 表示言語の既定見出し（zh / ja / en）
+   *
+   * @param existingContent - 既存ノートの内容
+   * @param configuredHeader - ユーザー設定の見出し（空なら自動）
+   * @param uiLocale - 表示言語（テスト用。省略時は chrome.i18n）
+   */
+  static resolveSectionHeader(
+    existingContent: string,
+    configuredHeader: string | null | undefined = '',
+    uiLocale?: string
+  ): string {
+    const configured = this.normalizeSectionHeader(configuredHeader);
+    const localeDefault = this.defaultSectionHeader(uiLocale);
+
+    const candidates = [configured, localeDefault, ...KNOWN_SECTION_HEADERS].filter(
+      (header): header is string => header.length > 0
+    );
+
+    const existing = candidates.find(header => this._hasHeaderLine(existingContent, header));
+    if (existing) return existing;
+
+    return configured || localeDefault;
+  }
 
   static insertIntoSection(
     existingContent: string,
@@ -26,11 +100,16 @@ export class NoteSectionEditor {
     newContent: string,
     options: InsertOptions = {}
   ): string {
-    if (existingContent.includes(sectionHeader)) {
+    if (this._hasHeaderLine(existingContent, sectionHeader)) {
       return this._insertUnderExistingSection(existingContent, sectionHeader, newContent, options);
     } else {
       return this._createNewSection(existingContent, sectionHeader, newContent);
     }
+  }
+
+  /** 内容中に、その見出しと完全一致する行があるか。 */
+  private static _hasHeaderLine(content: string, sectionHeader: string): boolean {
+    return content.split('\n').some(line => line.trim() === sectionHeader);
   }
 
   private static _insertUnderExistingSection(

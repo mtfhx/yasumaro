@@ -334,6 +334,14 @@
             </div>
 
             <div class="form-group">
+              <label for="obsidianSectionHeader" data-i18n="obsidianSectionHeaderLabel">History Section Heading</label>
+              <input type="text" id="obsidianSectionHeader" data-storage-key="obsidian_section_header" maxlength="120"
+                autocomplete="off" data-i18n-input-placeholder="obsidianSectionHeaderPlaceholder"
+                aria-describedby="obsidianSectionHeaderHelp">
+              <div id="obsidianSectionHeaderHelp" class="help-text" data-i18n="obsidianSectionHeaderHelp">Heading written into the daily note. Leave empty to choose automatically from your display language (Japanese / Chinese / English). If the note already has a known heading, that heading is reused.</div>
+            </div>
+
+            <div class="form-group">
               <label for="obsidianHost" data-i18n="label_obsidian_host">Obsidian Host</label>
               <input type="text" id="obsidianHost" data-storage-key="obsidian_host" placeholder="127.0.0.1" aria-invalid="false"
                 aria-describedby="obsidianHostNote obsidianHostError">

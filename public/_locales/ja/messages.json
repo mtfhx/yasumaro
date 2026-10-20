@@ -107,6 +107,15 @@
   "obsidianSectionOrderHelp": {
     "message": "デイリーノートの「ブラウザ閲覧履歴」セクションに記録を追加する位置です。新しい順では、最新の記録ほど上に表示されます。"
   },
+  "obsidianSectionHeaderLabel": {
+    "message": "閲覧履歴セクションの見出し"
+  },
+  "obsidianSectionHeaderPlaceholder": {
+    "message": "例: # 🌐 ブラウザ閲覧履歴（空欄で表示言語から自動）"
+  },
+  "obsidianSectionHeaderHelp": {
+    "message": "デイリーノートに書き込む見出しです。空欄の場合は表示言語に合わせて日本語・中文・English から自動選択します。既存ノートに見出しがある場合は、その見出しをそのまま使います（セクションの重複を防ぐため）。"
+  },
   "label_obsidian_host": {
     "message": "Obsidian ホスト"
   },

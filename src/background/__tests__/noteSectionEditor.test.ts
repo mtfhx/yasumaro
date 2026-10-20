@@ -184,4 +184,62 @@ describe('NoteSectionEditor', () => {
       });
     });
   });
+
+  describe('resolveSectionHeader', () => {
+    it('uses the configured heading when the note has no known heading', () => {
+      expect(
+        NoteSectionEditor.resolveSectionHeader('Existing content\n', '# 🌐 浏览器访问记录', 'ja-JP')
+      ).toBe('# 🌐 浏览器访问记录');
+    });
+
+    it('reuses the Japanese heading already present in the note', () => {
+      const existing = '# 🌐 ブラウザ閲覧履歴\n- Old entry\n';
+      expect(NoteSectionEditor.resolveSectionHeader(existing, '', 'zh-CN')).toBe(
+        '# 🌐 ブラウザ閲覧履歴'
+      );
+    });
+
+    it('reuses a Chinese heading already present in the note', () => {
+      const existing = '# 🌐 浏览器访问记录\n- 旧记录\n';
+      expect(NoteSectionEditor.resolveSectionHeader(existing, '', 'ja-JP')).toBe(
+        '# 🌐 浏览器访问记录'
+      );
+    });
+
+    it('reuses an English heading already present in the note', () => {
+      const existing = '## Notes\n# 🌐 Browser History\n- Old entry\n';
+      expect(NoteSectionEditor.resolveSectionHeader(existing, '', 'ja-JP')).toBe(
+        '# 🌐 Browser History'
+      );
+    });
+
+    it('prefers the configured heading when it already exists', () => {
+      const existing = '# 🌐 ブラウザ閲覧履歴\n# 🌐 My Log\n- Old entry\n';
+      expect(NoteSectionEditor.resolveSectionHeader(existing, '  # 🌐 My Log  ', 'ja-JP')).toBe(
+        '# 🌐 My Log'
+      );
+    });
+
+    it('falls back to the display language when the note is empty', () => {
+      expect(NoteSectionEditor.resolveSectionHeader('', '', 'zh-CN')).toBe('# 🌐 浏览器访问记录');
+      expect(NoteSectionEditor.resolveSectionHeader('', '', 'zh-TW')).toBe('# 🌐 浏览器访问记录');
+      expect(NoteSectionEditor.resolveSectionHeader('', '', 'ja-JP')).toBe('# 🌐 ブラウザ閲覧履歴');
+      expect(NoteSectionEditor.resolveSectionHeader('', '', 'en-US')).toBe('# 🌐 Browser History');
+      expect(NoteSectionEditor.resolveSectionHeader('', '', 'fr-FR')).toBe('# 🌐 Browser History');
+    });
+
+    it('normalizes a multi-line configured heading to its first line', () => {
+      expect(
+        NoteSectionEditor.normalizeSectionHeader('\n  # 🌐 浏览器访问记录  \n- injected\n')
+      ).toBe('# 🌐 浏览器访问记录');
+    });
+
+    it('inserts under the reused Chinese heading when one already exists', () => {
+      const existing = '# 🌐 浏览器访问记录\n- 旧记录';
+      const header = NoteSectionEditor.resolveSectionHeader(existing, '', 'zh-CN');
+      const result = NoteSectionEditor.insertIntoSection(existing, header, '- 新记录', { order: 'newest_first' });
+
+      expect(result).toBe('# 🌐 浏览器访问记录\n- 新记录\n- 旧记录');
+    });
+  });
 });

@@ -124,9 +124,10 @@ describe('intended validateExportData behavior (SSOT-derived)', () => {
     expect(validateExportData(exportData(settings, true, LEGACY_EXPORT_VERSION))).toBe(true);
   });
 
-  test('1.1.0 export lacking a key added later stays importable', () => {
+  test('1.1.0 export lacking keys added later stays importable', () => {
     const settings = fullNonApiSettings();
     delete settings['obsidian_section_order'];
+    delete settings['obsidian_section_header'];
 
     // 旧バージョン(1.1.0)のエクスポートは新キーを持たないが、凍結契約で
     // 検証されるため引き続きインポートできる。

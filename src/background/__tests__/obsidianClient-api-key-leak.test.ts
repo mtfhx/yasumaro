@@ -90,6 +90,7 @@ vi.mock('../../utils/dailyNotePathBuilder.js', () => ({
 vi.mock('../noteSectionEditor.js', () => ({
   NoteSectionEditor: {
     DEFAULT_SECTION_HEADER: '## History',
+    resolveSectionHeader: vi.fn((_content: string, configured: string) => configured || '## History'),
     insertIntoSection: vi.fn((existing, _header, content) => `${existing}\n${content}`),
   },
 }));

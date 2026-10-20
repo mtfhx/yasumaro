@@ -55,6 +55,7 @@ vi.mock('../../utils/dailyNotePathBuilder.js', () => ({
 vi.mock('../noteSectionEditor.js', () => ({
   NoteSectionEditor: {
     DEFAULT_SECTION_HEADER: '## History',
+    resolveSectionHeader: vi.fn((_content: string, configured: string) => configured || '## History'),
     insertIntoSection: vi.fn((existingContent, sectionHeader, content) => `${sectionHeader}\n${content}`)
   }
 }));
@@ -968,6 +969,41 @@ describe('ObsidianClient: connection check retry policy', () => {
         '## History',
         'new content',
         { order: 'oldest_first' }
+      );
+    });
+
+    it('uses the configured section heading', async () => {
+      (storage as unknown as { StorageKeys: Record<string, string> }).StorageKeys.OBSIDIAN_SECTION_HEADER =
+        'OBSIDIAN_SECTION_HEADER';
+      mockGetSettings.mockResolvedValue({
+        OBSIDIAN_API_KEY: 'test_key',
+        OBSIDIAN_PROTOCOL: 'http',
+        OBSIDIAN_PORT: '27123',
+        OBSIDIAN_DAILY_PATH: '',
+        OBSIDIAN_SECTION_HEADER: '# 🌐 浏览器访问记录'
+      });
+
+      fetchMock().mockImplementation((_url, options) => {
+        if (options.method === 'GET') {
+          return Promise.resolve({
+            ok: true,
+            text: () => Promise.resolve('')
+          });
+        }
+        return Promise.resolve({ ok: true });
+      });
+
+      await obsidianClient.appendToDailyNote('new content');
+
+      expect(NoteSectionEditor.resolveSectionHeader).toHaveBeenCalledWith(
+        '',
+        '# 🌐 浏览器访问记录'
+      );
+      expect(NoteSectionEditor.insertIntoSection).toHaveBeenCalledWith(
+        '',
+        '# 🌐 浏览器访问记录',
+        'new content',
+        { order: 'newest_first' }
       );
     });
 

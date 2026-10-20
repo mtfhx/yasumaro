@@ -107,6 +107,15 @@
   "obsidianSectionOrderHelp": {
     "message": "Where new records are added in the Browser History section of the daily note. Newest first shows the latest record at the top."
   },
+  "obsidianSectionHeaderLabel": {
+    "message": "History Section Heading"
+  },
+  "obsidianSectionHeaderPlaceholder": {
+    "message": "e.g. # 🌐 Browser History (empty = chosen from display language)"
+  },
+  "obsidianSectionHeaderHelp": {
+    "message": "Heading written into the daily note. Leave empty to choose automatically from your display language (Japanese / Chinese / English). If the note already has a known heading, that heading is reused so the section is not duplicated."
+  },
   "label_obsidian_host": {
     "message": "Obsidian Host"
   },

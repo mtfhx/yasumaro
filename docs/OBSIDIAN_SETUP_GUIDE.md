@@ -98,6 +98,18 @@ Chrome の Yasumaro 拡張機能アイコンを右クリックして **オプシ
 
 設定は次回の記録から反映されます。既存ノートにすでに書かれている記録の順序は変更されません。
 
+#### 閲覧履歴セクションの見出し
+
+見出しは **閲覧履歴セクションの見出し** で変更できます。空欄のままにすると、表示言語に合わせて自動選択されます。
+
+| 表示言語 | 既定の見出し |
+|----------|--------------|
+| 日本語 | `# 🌐 ブラウザ閲覧履歴` |
+| 簡体中文（zh-CN / zh-TW） | 中国語の見出し（自動選択） |
+| その他 | `# 🌐 Browser History` |
+
+中国語の見出しを必ず使いたい場合は、この欄に任意の中国語の見出し（`# 🌐 ` で始まる1行）を入力してください。既存ノートに既知の見出しがある場合は、その見出しを再利用するためセクションが重複しません。見出しを変更しても、既存ノートの見出しは書き換えられません（新しいノート・新しい日付のノートから新しい見出しになります）。
+
 ---
 
 ### トラブルシューティング
@@ -241,6 +253,18 @@ Under **Advanced Settings** you can choose where new records are added in the `#
 | **Oldest first** | Appends to the end of the section, matching the previous behaviour. |
 
 The setting applies from the next recorded page onward. Existing records already in the note are not reordered.
+
+#### History Section Heading
+
+The heading can be customised with **History Section Heading**. Leave it empty to pick one from your display language:
+
+| Display language | Default heading |
+|------------------|-----------------|
+| Japanese | `# 🌐 ブラウザ閲覧履歴` |
+| Simplified Chinese (zh-CN / zh-TW) | A Chinese heading (automatic) |
+| Anything else | `# 🌐 Browser History` |
+
+To force a Chinese heading, enter your preferred Chinese heading (a single line starting with `# 🌐 `) in that field. If the note already contains a known heading, it is reused so the section is not duplicated. Changing the setting does not rewrite headings that already exist in old notes; it applies to new notes (new dates) from then on.
 
 ---
 

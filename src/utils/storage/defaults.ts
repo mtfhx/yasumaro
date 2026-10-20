@@ -41,6 +41,9 @@ export const DEFAULT_SETTINGS: DeepReadonly<Settings> = {
     // 新しい記録をセクション先頭に置く（読み返し時に最新が上）。従来の
     // 末尾追記に戻したい場合は設定で 'oldest_first' を選ぶ。
     [StorageKeys.OBSIDIAN_SECTION_ORDER]: 'newest_first',
+    // 空欄は自動（表示言語が zh なら中文、ja なら日本語、それ以外は英語）。
+    // 既存ノートに既知の見出しがある場合はそちらを再利用する。
+    [StorageKeys.OBSIDIAN_SECTION_HEADER]: '',
     [StorageKeys.AI_PROVIDER]: 'openai',
     [StorageKeys.AI_PROVIDER_PRIORITY_LIST]: [],
     [StorageKeys.AI_PROVIDER_LAYOUT]: 'a',
